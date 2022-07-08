@@ -21,4 +21,28 @@ $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt->closeCursor();
 
-print_r($data);
+// Вывод показателей
+for($i = 0; $i < sizeof($data); $i += 2): ?>
+	<form method="POST" action="./filler.php">
+		<input name="ids-start" value="section-start" hidden />
+		<table>
+			<tr><td colspan=3><?php echo $data[$i]["checker"]; ?></td></tr>
+			<tr>
+				<td><?php $data[$i]["title"]; ?></td>
+				<td><input value=<?php echo $data[$i]["value"]; ?> disabled /></td>
+				<td><input name=<?php echo $data[$i]["id"]; ?> value=<?php echo $data[$i]["value"]; ?> /></td>
+			</tr>
+			<tr>
+				<td><?php $data[$i+1]["title"]; ?></td>
+				<td><input value=<?php echo $data[$i+1]["value"]; ?> disabled /></td>
+				<td><input name=<?php echo $data[$i+1]["id"]; ?> value=<?php echo $data[$i+1]["value"]; ?> /></td>
+			</tr>
+			<tr>
+				<td colspan=3>
+					<input name="ids-end" value="section-end" hidden />
+					<input type="submit" name="filler-update" value="Сохранить" />
+				</td>
+			</tr>
+		</table>
+	</form>
+<?php endfor; ?>
