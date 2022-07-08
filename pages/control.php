@@ -141,7 +141,7 @@ foreach($data as $value) {
 	$titles[$value["title"]] = $value["title"];
 }
 
-// Вывод показателей
+// Вывод показателей и периодов
 ?>
 
 <form method="POST" action=".\control.php">		
@@ -161,8 +161,9 @@ foreach($data as $value) {
 			</tr>
 		<?php endforeach; ?>
 	</table>
-    <p><input type="submit" name="create_period" value="Новый период" /></p>
+		<p><input type="submit" name="create_period" value="Новый период" /></p>
 </form>
+<br />
 
 <form method="POST" action=".\control.php">
 	<p>Периоды</p>
