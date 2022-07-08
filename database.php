@@ -18,3 +18,31 @@ function GetDatabase(): PDO {
 
     return $db;
 }
+
+function DB_GetValues(string $query = "", array $keys = array(), array $vals = array()): array {
+    $res = array();
+
+    $stmt = GetDatabase()->prepare($query);
+    
+    for($k = 0; $k < sizeof($keys); $k++) {
+        $stmt->bindValue(":" .$keys[$k], $vals[$k]);
+    }
+
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
+
+    return $res;
+}
+
+function DB_SetValues(string $query = "", array $keys = array(), array $vals = array()): void {
+    $stmt = GetDatabase()->prepare($query);
+
+    for($v = 0; $v < sizeof($vals); $v += sizeof($keys)) {
+        for($k = 0; $k < sizeof($keys); $k++) {
+            $stmt->bindValue(":" .$keys[$k], $vals[$k + $v]);
+        }
+
+        $stmt->execute();
+    }
+}
