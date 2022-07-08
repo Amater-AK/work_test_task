@@ -27,4 +27,29 @@ foreach($data as $value) {
 	$values[$value["id"]] = $value["value"];
 }
 
-print_r($data);
+// Вывод показателей
+?>
+
+<form method="POST" action="./checker.php">
+	<input name="ids-start" value="section-start" hidden />
+	<table>
+		<tr>
+			<?php foreach($titles as $title) {
+				echo "<td>" .$title ."</td>";
+			} ?>
+		</tr>
+		<tr>
+			<?php foreach($values as $value) {
+				echo "<td><input value=" .$value ." disabled /></td>";
+			} ?>
+		</tr>
+		<tr>
+		<?php foreach($values as $id => $value) {
+				echo "<td><input name=" .$id ." value=" .$value ." /></td>";
+			} ?>
+		</tr>
+	</table>
+	<input name="ids-end" value="section-end" hidden />
+	<br />
+	<input type="submit" name="checker-update" value="Сохранить" />
+</form>
