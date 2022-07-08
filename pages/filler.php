@@ -4,6 +4,15 @@ require_once "../database.php";
 
 session_start();
 
+// Ограничения
+if(!isset($_SESSION["user"])) {
+    header("Location: ../index.php");
+    exit();
+}
+if($_SESSION["user"]["page_alias"] !== basename(__FILE__)) {
+	header("Location: ./" .$_SESSION["user"]["page_alias"]);
+    exit();
+}
 ?>
 
 <div style='position: absolute; top: 0px; right: 0px; padding: 10px; display: flex; min-width: 300px; justify-content: space-between;'>

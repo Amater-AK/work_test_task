@@ -4,6 +4,12 @@ require_once "./database.php";
 
 session_start();
 
+// Ограничения
+if(isset($_SESSION["user"])) {
+    header("Location: ./pages/" .$_SESSION["user"]["page_alias"]);
+    exit();
+}
+
 $db = GetDatabase();
 
 // Аутентификация
