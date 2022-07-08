@@ -109,6 +109,19 @@ $stmt->closeCursor();
 
 $period_id = $data["id"];
 
+// При смене периода, получаем id выбранного
+if(isset($_POST["change_period"]) && isset($_POST["selected_period"])) {
+	$period_id = $_POST["selected_period"];
+}
+
+// Получаем временные рамки всех периодов
+$stmt = $db->prepare("SELECT id, period_start, period_end 
+						FROM Periods
+						ORDER BY id");
+$stmt->execute();
+$periods = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt->closeCursor();
+
 // Получение показателей выбранного периода
 $stmt = $db->prepare("SELECT IV.id, U.full_name AS checker, I.title, IV.value 
 						FROM Indicators_values AS IV, Indicators AS I, Users AS U 
@@ -149,4 +162,18 @@ foreach($data as $value) {
 		<?php endforeach; ?>
 	</table>
     <p><input type="submit" name="create_period" value="Новый период" /></p>
+</form>
+
+<form method="POST" action=".\control.php">
+	<p>Периоды</p>
+	<select name="selected_period">
+		<?php foreach($periods as $period): ?>
+			<option value=<?php echo $period["id"]; echo (($period_id == $period["id"]) ? " selected" : ""); ?>>
+				<?php echo $period["period_start"] ." - " .$period["period_end"]; ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+	<p>
+		<input type="submit", name="change_period" value="Выбрать" />
+	</p>
 </form>
