@@ -26,4 +26,24 @@ foreach($data as $value) {
 	$titles[$value["title"]] = $value["title"];
 }
 
-print_r($data);
+// Вывод показателей
+?>
+
+<form method="POST" action=".\control.php">		
+	<table>
+		<tr>
+			<td></td>
+			<?php foreach($titles as $title): ?>
+				<td><?php echo $title; ?></td>
+			<?php endforeach; ?>
+		</tr>
+		<?php foreach($values as $checker => $v): ?>
+			<tr>
+				<td><?php echo $checker; ?></td> 
+				<?php foreach($v as $value): ?>
+						<td><input value=<?php echo $value; ?> disabled /></td>
+				<?php endforeach; ?>
+			</tr>
+		<?php endforeach; ?>
+	</table>
+</form>
