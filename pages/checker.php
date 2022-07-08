@@ -55,8 +55,9 @@ $stmt = $db->prepare("SELECT IV.id, I.title, IV.value
 						FROM Indicators_values AS IV, Indicators AS I 
 						WHERE IV.checker_id = :checker_id 
 							AND IV.indicator_id = I.id 
+							AND IV.period_id = (SELECT id FROM Periods WHERE isArchived = 0 LIMIT 1)
 						ORDER BY IV.id");
-$stmt->bindValue(":checker_id", 4);
+$stmt->bindValue(":checker_id", $_SESSION["user"]["id"]);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt->closeCursor();

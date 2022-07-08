@@ -98,12 +98,25 @@ if(isset($_POST["create_period"])) {
 	}
 }
 
-// Получение показателей
+// Получаем id текущего (активного) периода
+$stmt = $db->prepare("SELECT id 
+						FROM Periods 
+						WHERE isArchived = 0 
+						LIMIT 1");
+$stmt->execute();
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt->closeCursor();
+
+$period_id = $data["id"];
+
+// Получение показателей выбранного периода
 $stmt = $db->prepare("SELECT IV.id, U.full_name AS checker, I.title, IV.value 
 						FROM Indicators_values AS IV, Indicators AS I, Users AS U 
 						WHERE IV.indicator_id = I.id 
 							AND IV.checker_id = U.id 
+							AND IV.period_id = :period_id 
 						ORDER BY IV.checker_id, IV.id");
+$stmt->bindValue(":period_id", $period_id);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt->closeCursor();
