@@ -56,8 +56,9 @@ $stmt = $db->prepare("SELECT IV.id, I.title, U.full_name AS checker, IV.value
 						WHERE I.filler_id = :filler_id 
 							AND IV.indicator_id = I.id
 							AND IV.checker_id = U.id 
+							AND IV.period_id = (SELECT id FROM Periods WHERE isArchived = 0 LIMIT 1)
 						ORDER BY IV.checker_id");
-$stmt->bindValue(":filler_id", 1);
+$stmt->bindValue(":filler_id", $_SESSION["user"]["id"]);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt->closeCursor();
