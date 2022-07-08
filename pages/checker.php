@@ -2,8 +2,13 @@
 
 require_once "../database.php";
 
+session_start();
+
 ?>
 
+<div style='position: absolute; top: 0px; right: 0px; padding: 10px; display: flex; min-width: 300px; justify-content: space-between;'>
+	<strong><?php echo $_SESSION["user"]["full_name"]; ?></strong><a href='./logout.php'>Выход</a>
+</div>
 <h2>Проверяющий</h2>
 
 <?php
