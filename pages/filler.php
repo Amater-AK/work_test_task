@@ -9,6 +9,33 @@ require_once "../database.php";
 <?php
 $db = GetDatabase();
 
+// Обновление значений показателей
+if(isset($_POST["filler-update"])) {		
+	$data = array();
+	$flag = false;
+	foreach($_POST as $key => $value) {
+		if($key === "ids-start") { $flag = true; continue; }
+		if($key === "ids-end") { break; }
+		if($flag) {
+			$data[$key] = $value;
+		}
+	}
+
+	$stmt = $db->prepare("UPDATE Indicators_values 
+							SET value = :value 
+							WHERE id = :id");
+	$stmt->bindParam(":value", $new_value);
+	$stmt->bindParam(":id", $id);
+
+	$new_value = null;
+	$id = null;
+	foreach($data as $key => $value) {
+		$id = $key;
+		$new_value = $value;
+		$stmt->execute();
+	}
+}
+
 // Получение показателей
 $stmt = $db->prepare("SELECT IV.id, I.title, U.full_name AS checker, IV.value 
 						FROM Indicators_values AS IV, Indicators AS I, Users AS U 
