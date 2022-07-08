@@ -1,5 +1,7 @@
 <?php
 
-    echo "Hello";
+    require_once "./database.php";
+
+    GetDatabase();
 
 ?>
